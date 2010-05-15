@@ -1,0 +1,48 @@
+From http://wiki.sproutcore.com/Todos+06-Building+the+Backend
+
+- GET /tasks - request should return all of the tasks defined for the current user.
+- GET taskURL - the task for a specific URL.
+- POST /tasks - request will create a new task, assigning it a unique guid.
+    It should return a 201 with a Location header for the new record.
+- PUT taskURL - request will update the state of a specified task
+- DELETE taskURL - request will delete the specified task
+
+For our design, each task’s GUID will be the URL that it actually belongs to.
+
+Each request above accepts and posts JSON as its primary payload.
+
+Each record is formatted as a simple data hash like so:
+{ 
+    "guid": "/task/123",   
+    "description": "Task description"   
+    "isDone": true | false 
+} 
+
+Here is the example format when you retrieve the data for a single task:
+{   
+    "content": {       
+        "guid": "/task/123",     
+        "description": "Task description",     
+        "order": 1,     
+        "isDone": false  
+    } 
+}
+
+For the index request (that returns all of the tasks), the content property is simply an array of data hashes:
+{   
+    content: [      
+         { 
+             "guid": "/task/123",       
+             "description": "Task description",       
+             "order": 1,       
+             "isDone": false 
+         },      
+         { 
+             "guid": "/task/345",       
+             "description": "Task description",       
+             "order": 2,       
+             "isDone": false 
+         }    
+    ] 
+}
+
