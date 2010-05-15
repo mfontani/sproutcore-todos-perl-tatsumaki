@@ -1,7 +1,31 @@
 #!/usr/bin/env perl
+# A Plack / Tatsumaki / ORLite back-end for the SproutCore demo "tasks".
+# See http://wiki.sproutcore.com/Todos+06-Building+the+Backend for details.
+# Copyright (c) 2010, Marco Fontani <MFONTANI@cpan.org>. All rights reserved.
+#
+# Redistribution and use in source and binary forms, with or without
+# modification, are permitted provided that the following conditions are met:
+#     * Redistributions of source code must retain the above copyright
+#       notice, this list of conditions and the following disclaimer.
+#     * Redistributions in binary form must reproduce the above copyright
+#       notice, this list of conditions and the following disclaimer in the
+#       documentation and/or other materials provided with the distribution.
+#     * The names of its contributors may not be used to endorse or promote products
+#       derived from this software without specific prior written permission.
+#
+# THIS SOFTWARE IS PROVIDED ''AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
+# INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
+# AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+# IN NO EVENT SHALL Marco Fontani BE LIABLE FOR ANY DIRECT, INDIRECT,
+# INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+# BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+# LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+# ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+# (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+# SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
 use strict;
 use warnings;
-
 use Tatsumaki::Error;
 use Tatsumaki::Application;
 use Tatsumaki::Server;
@@ -26,6 +50,13 @@ And insert some data to start with:
     INSERT INTO Task (isdone,description) VALUES (0,'Get a coffee');
     INSERT INTO Task (isdone,description) VALUES (0,'Finish documentation');
 
+
+=head1 Launch
+
+Simply execute:
+
+    plackup -a tasks.tatsumaki.psgi
+
 =cut
 
 package Tasks::Model;
@@ -48,9 +79,9 @@ sub get {
     sub {
       push @tasks,
         {
-        guid        => '/task/' . $_->{id},
-        description => $_->{description},
-        isDone      => $_->{isdone} ? 1 : 0,
+        guid        => '/task/' . $_->id,
+        description => $_->description,
+        isDone      => $_->isdone ? 1 : 0,
         };
     }
   );
@@ -80,7 +111,7 @@ package Tasks::Controller::Content;
 use parent qw/Tatsumaki::Handler/;
 use JSON;
 
-# the controller used to GET a specific task, or DELETE an existing task.
+# the controller used to GET a specific task, PUT new data for a task, or DELETE an existing task.
 
 # GET a task's data
 sub get {
