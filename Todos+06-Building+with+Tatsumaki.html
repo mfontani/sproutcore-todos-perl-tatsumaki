@@ -1,73 +1,28 @@
 <h2>About Perl</h2>
-<p>
-    From its site: &quot;<a href="http://www.Perl.org/">Perl</a> is a highly capable,
-    feature-rich programming language with over 20 years of development.
-    Perl 5 runs on over 100 platforms from portables to mainframes.
-    Perl is suitable for both rapid prototyping and large scale development projects.&quot;
-</p>
+<p>From its site: "<a href="http://www.Perl.org/">Perl</a> is a highly capable,     feature-rich programming language with over 20 years of development.     Perl 5 runs on over 100 platforms from portables to mainframes.     Perl is suitable for both rapid prototyping and large scale development projects."</p>
 <h2>About Tatsumaki</h2>
-<p>
-    <a href="http://search.cpan.org/dist/Tatsumaki/">Tatsumaki</a>
-    is a port of Tornado for Perl, written by Tatsuhiko Miyagawa.
-    Despite its current alpha status, it's a fully working non-blocking framework.
-    It's based on
-    <a href="http://plackperl.org/">Plack</a> (a PSGI middleware, inspired by WSGI and Rack)
-    and <a href="http://search.cpan.org/dist/AnyEvent/">AnyEvent</a>, a wonderful event loop for Perl.
-</p>
+<p><a href="http://search.cpan.org/dist/Tatsumaki/">Tatsumaki</a> is a port of Tornado for Perl, written by Tatsuhiko Miyagawa.     Despite its current alpha status, it's a fully working non-blocking framework.     It's based on     <a href="http://plackperl.org/">Plack</a> (a PSGI middleware, inspired by WSGI and Rack)     and <a href="http://search.cpan.org/dist/AnyEvent/">AnyEvent</a>, a wonderful event loop for Perl.</p>
 <h2>About ORLite</h2>
-<p>
-    <a href="http://search.cpan.org/dist/ORLite">ORLite</a> is an extremely lightweight
-    SQLite-specific ORM for Perl. It's very useful for simple application prototyping,
-    as in this tutorial.
-</p>
+<p><a href="http://search.cpan.org/dist/ORLite">ORLite</a> is an extremely lightweight     SQLite-specific ORM for Perl. It's very useful for simple application prototyping,     as in this tutorial.</p>
 <h2>Goals</h2>
-<p>
-    At the end of this tutorial, you'll have created a back-end for the SproutCore
-    &quot;tasks&quot; tutorial, using Tatsumaki and ORLite 
-    You may even start liking Perl.
-</p>
+<p>At the end of this tutorial, you'll have created a back-end for the SproutCore     "tasks" tutorial, using Tatsumaki and ORLite      You may even start liking Perl.</p>
 <h2>Initial setup</h2>
-<p>
-    Part of this tutorial assumes a Linux OS, but (with some changes) the same can be performed
-    in OSX or Windows. The relevant sqlite3 libraries should also be installed via your favorite
-    package manager.
-</p>
-<p>
-    <a href="http://search.cpan.org/dist/App-cpanminus/">App::cpanminus</a>
-    will be used to simplify the installation of modules from <a href="http://search.cpan.org">CPAN</a>.
-    This utility has also been written by Tatsuhiko Miyagawa.
-</p>
-<p>
-    Fetch and install App::cpanminus on ~/perl5, via:
-    <pre>wget http://xrl.us/cpanminus
+<p>Part of this tutorial assumes a Linux OS, but (with some changes) the same can be performed     in OSX or Windows. The relevant sqlite3 libraries should also be installed via your favorite     package manager.</p>
+<p><a href="http://search.cpan.org/dist/App-cpanminus/">App::cpanminus</a> will be used to simplify the installation of modules from <a href="http://search.cpan.org">CPAN</a>.     This utility has also been written by Tatsuhiko Miyagawa.</p>
+<p>Fetch and install App::cpanminus on ~/perl5, via:</p>
+<pre>wget http://xrl.us/cpanminus
     chmod +x cpanm</pre>
-    This will fetch the Perl command, and make it executable.
-</p>
-<p>
-    You could also use the <tt>cpan</tt> client to fetch and install <tt>App::cpanminus</tt>,
-    or use it throughout to install the other modules.
-</p>
-<p>
-    Installing Tatsumaki is as easy as typing: <tt>./cpanm Tatsumaki</tt>.<br />
-    You'll also need the Plack, JSON, DBD::SQLite and ORLite modules, so the following will work:
-    <pre>./cpanm Plack Tatsumaki JSON DBD::SQLite ORLite</pre>
-    After a bit of crunching in the background, all the various modules should be installed
-    under your <tt>~/perl5</tt> directory.
-</p>
-<p>
-    In order to let Perl look for the modules in <tt>~/perl5</tt>, you'll have to add it to
-    the <tt>PERL5LIB</tt> environment variable, usually done via the following on your shell's
-    <tt>.profile</tt>, or manually each time:
-    <pre>export PERL5LIB=$HOME/perl5/lib/perl5:$PERL5LIB</pre>
-</p>
-<p>
-    In order to test that all's in order, create a new file which eventually will contain
-    the whole &quot;tasks&quot; application, and verify you can reach it via your browser.
-</p>
-<p>
-    Create a file named tasks.tatsumaki.psgi in your favorite folder and editor, and stick in it:
-    <pre>
-        #!/usr/bin/env perl
+<p>This will fetch the Perl command, and make it executable.</p>
+<p>You could also use the <tt>cpan</tt> client to fetch and install <tt>App::cpanminus</tt>,     or use it throughout to install the other modules.</p>
+<p>Installing Tatsumaki is as easy as typing: <tt>./cpanm Tatsumaki</tt>.</p>
+<p>You'll also need the Plack, JSON, DBD::SQLite and ORLite modules, so the following will work:</p>
+<pre>./cpanm Plack Tatsumaki JSON DBD::SQLite ORLite</pre>
+<p>After a bit of crunching in the background, all the various modules should be installed     under your <tt>~/perl5</tt> directory.</p>
+<p>In order to let Perl look for the modules in <tt>~/perl5</tt>, you'll have to add it to     the <tt>PERL5LIB</tt> environment variable, usually done via the following on your shell's     <tt>.profile</tt>, or manually each time:</p>
+<pre>export PERL5LIB=$HOME/perl5/lib/perl5:$PERL5LIB</pre>
+<p>In order to test that all's in order, create a new file which eventually will contain     the whole "tasks" application, and verify you can reach it via your browser.</p>
+<p>Create a file named tasks.tatsumaki.psgi in your favorite folder and editor, and stick in it:</p>
+<pre>        #!/usr/bin/env perl
         use strict;
         use warnings;
 
@@ -80,8 +35,10 @@
         use JSON;
 
         my $static_data = [
-            { guid =&gt; '/task/1', isDone =&gt; 1, description =&gt; 'add static data to file' },
-            { guid =&gt; '/task/2', isDone =&gt; 0, description =&gt; 'test the /tasks list' },
+            { guid =&gt; '/task/1', isDone =&gt; 1,
+              description =&gt; 'add static data to file' },
+            { guid =&gt; '/task/2', isDone =&gt; 0,
+              description =&gt; 'test the /tasks list' },
         ];
 
         sub get
@@ -96,57 +53,43 @@
         ]);
         return $app;
     </pre>
-    This will create a barebone Tatsumaki application, with one entry point in /tasks, which
-    is supposed to return a list of the tasks. A hashref of static data is initialised, so
-    that you will be able to test it with Plackup straightaway:
-    <pre>plackup -a tasks.tatsumaki.psgi</pre>
-    You'll then be able to visit <a href="http://127.0.0.1:5000/tasks">http://127.0.0.1:5000/tasks</a>,
-    and you should receive the list of the static tasks, in JSON notation.
-</p>
+<p>This will create a barebone Tatsumaki application, with one entry point in /tasks, which     is supposed to return a list of the tasks. A hashref of static data is initialised, so     that you will be able to test it with Plackup straightaway:</p>
+<pre>plackup -a tasks.tatsumaki.psgi</pre>
+<p>You'll then be able to visit <a href="http://127.0.0.1:5000/tasks">http://127.0.0.1:5000/tasks</a>,     and you should receive the list of the static tasks, in JSON notation.</p>
 <h2>SproutCore proxy modifications</h2>
-<p>You'll need to tell sc-server that from now onwards the path <tt>/tasks</tt> will need to be
-redirected to 127.0.0.1:5000. You can do so by adding the following lines to your already-existing
-Buildfile:
-<pre>
-    proxy '/tasks', :to =&gt; '127.0.0.1:5000'
+<p>You'll need to tell sc-server that from now onwards the path <tt>/tasks</tt> will need to be redirected to 127.0.0.1:5000. You can do so by adding the following lines to your already-existing Buildfile:</p>
+<pre>    proxy '/tasks', :to =&gt; '127.0.0.1:5000'
     proxy '/task',  :to =&gt; '127.0.0.1:5000'
 </pre>
-This will ensure that both /tasks and /task will be redirected to your Plackup server.
-</p>
-<p>Remove your tmp/ folder and re-launch sc-server. You should be able to see the list of
-tasks defined in the above .psgi file, although you won't be able to interact with them yet.</p>
-
+<p>This will ensure that both /tasks and /task will be redirected to your Plackup server.</p>
+<p>Remove your tmp/ folder and re-launch sc-server. You should be able to see the list of tasks defined in the above .psgi file, although you won't be able to interact with them yet.</p>
 <h2>Database</h2>
-<p>In order to make this as simple as possible, you'll just create a new SQLite database on /tmp,
-create a Task table on it and add some data to it:
-<pre>
-    $ sqlite3 /tmp/tasks.sqlite
-    sqlite&gt; CREATE TABLE Task(id integer not null primary key autoincrement, isdone tinyint default 0, description text default '');
-    sqlite&gt; INSERT INTO Task (isdone,description) VALUES (1,'Insert stuff in table');
-    sqlite&gt; INSERT INTO Task (isdone,description) VALUES (0,'Get a coffee');
-    sqlite&gt; INSERT INTO Task (isdone,description) VALUES (0,'Finish documentation');
+<p>In order to make this as simple as possible, you'll just create a new SQLite database on /tmp, create a Task table on it and add some data to it:</p>
+<pre>    $ sqlite3 /tmp/tasks.sqlite
+    sqlite&gt; CREATE TABLE Task(
+             id integer not null primary key autoincrement,
+             isdone tinyint default 0,
+             description text default '');
+    sqlite&gt; INSERT INTO Task (isdone,description) VALUES
+                 (1,'Insert stuff in table');
+    sqlite&gt; INSERT INTO Task (isdone,description) VALUES
+                 (0,'Get a coffee');
+    sqlite&gt; INSERT INTO Task (isdone,description) VALUES
+                 (0,'Finish documentation');
 </pre>
-Press CTRL+D to exit the SQLite prompt. That's all.
-</p>
-
+<p>Press CTRL+D to exit the SQLite prompt. That's all.</p>
 <h2>Hook ORLite</h2>
-<p>
-    Back to our tasks.tatsumaki.psgi file, insert the following before the <tt>package Tasks::Controller::List;</tt> line:
-    <pre>
-        package Tasks::Model;
+<p>Back to our tasks.tatsumaki.psgi file, insert the following before the <tt>package Tasks::Controller::List;</tt> line:</p>
+<pre>        package Tasks::Model;
         use ORLite {
           'package' =&gt; 'Tasks::Model',
           'file'    =&gt; '/tmp/tasks.sqlite',
         };
     </pre>
-    This will allow us to use the Tasks::Model::Task class to interact with the table, and it will use the
-    database file we just created.
-</p>
+<p>This will allow us to use the Tasks::Model::Task class to interact with the table, and it will use the     database file we just created.</p>
 <h2>List the tasks</h2>
-<p>Back to our tasks.tatsumaki.psgi file, remove the <tt>$static_data</tt> definition and the body of <tt>sub get</tt>,
-effectively replacing the <tt>package Tasks::Controller::List</tt> contents with:
-    <pre>
-        package Tasks::Controller::List;
+<p>Back to our tasks.tatsumaki.psgi file, remove the <tt>$static_data</tt> definition and the body of <tt>sub get</tt>, effectively replacing the <tt>package Tasks::Controller::List</tt> contents with:</p>
+<pre>        package Tasks::Controller::List;
         use parent qw/Tatsumaki::Handler/;
         use JSON;
         # the controller used to GET a list of tasks, or POST a new task.
@@ -167,18 +110,11 @@ effectively replacing the <tt>package Tasks::Controller::List</tt> contents with
             $self-&gt;write( to_json( { content =&gt; \@tasks } ) );
         }
     </pre>
-    If you restart plackup via <tt>plackup -a tasks.tatsumaki.psgi</tt> and restart the SproutCore sc-server,
-    you should be able to see the list of tasks pulled from the database.
-</p>
-
+<p>If you restart plackup via <tt>plackup -a tasks.tatsumaki.psgi</tt> and restart the SproutCore sc-server,     you should be able to see the list of tasks pulled from the database.</p>
 <h2>GETting one task's data</h2>
-<p>
-    This action is performed via a GET action to /task/NNN, where NNN is the guid given by the list.
-    At the bottom of the <tt>tasks.tatsumaki.psgi</tt> file, under <tt>package main;</tt>, add a handler
-    for <tt>/task/NNN</tt>. The <tt>package main;</tt> should look like this:
-    <pre>
-        package main;
-        my $app = Tatsumaki::Application->new(
+<p>This action is performed via a GET action to /task/NNN, where NNN is the guid given by the list.     At the bottom of the <tt>tasks.tatsumaki.psgi</tt> file, under <tt>package main;</tt>, add a handler     for <tt>/task/NNN</tt>. The <tt>package main;</tt> should look like this:</p>
+<pre>        package main;
+        my $app = Tatsumaki::Application-&gt;new(
             [
                 '/tasks'      =&gt; 'Tasks::Controller::List',
                 '/task/(\d+)' =&gt; 'Tasks::Controller::Content',
@@ -186,10 +122,8 @@ effectively replacing the <tt>package Tasks::Controller::List</tt> contents with
         );
         return $app;
     </pre>
-    Above in the file, after the <tt>sub get</tt> we modified in the previous step, add a new
-    package to handle the <tt>/task/NNN</tt> request:
-    <pre>
-        package Tasks::Controller::Content;
+<p>Above in the file, after the <tt>sub get</tt> we modified in the previous step, add a new     package to handle the <tt>/task/NNN</tt> request:</p>
+<pre>        package Tasks::Controller::Content;
         use parent qw/Tatsumaki::Handler/;
         use JSON;
         # GET a task's data
@@ -212,51 +146,40 @@ effectively replacing the <tt>package Tasks::Controller::List</tt> contents with
             );
         }
     </pre>
-    You can now re-launch plackup as before, then open <a href="http://127.0.0.1:5000/task/1">http://127.0.0.1:5000/task/1</a>
-    in your browser. You should see the JSON representation of the first task that was added in the SQLite database.
-</p>
-
+<p>You can now re-launch plackup as before, then open <a href="http://127.0.0.1:5000/task/1">http://127.0.0.1:5000/task/1</a> in your browser. You should see the JSON representation of the first task that was added in the SQLite database.</p>
 <h2>Adding a new task</h2>
-<p>
-    This action is performed via a JSON POST request to /tasks, which should contain an hashref
-    containing the <tt>isDone</tt> and <tt>description</tt> values to be added to the database.
-    On success, the method should return a HTTP 201 status, and a 'Location' header containing
-    the relative URL of the resource that has just been created.
-    Inside the Tasks::Controller::List package, below the <tt>sub get</tt>, insert the following:
-    <pre>
-        # POST a new task
+<p>This action is performed via a JSON POST request to /tasks, which should contain an hashref     containing the <tt>isDone</tt> and <tt>description</tt> values to be added to the database.     On success, the method should return a HTTP 201 status, and a 'Location' header containing     the relative URL of the resource that has just been created.     Inside the Tasks::Controller::List package, below the <tt>sub get</tt>, insert the following:</p>
+<pre>        # POST a new task
         sub post {
             my ($self) = @_;
             my $data;
-            my $json = JSON->new;
+            my $json = JSON-&gt;new;
             $json-&gt;allow_barekey(1);
             $json-&gt;allow_singlequote(1);
-            eval { $data = $json-&gt;decode( $self-&gt;request-&gt;content ); };
-            Tatsumaki::Error::HTTP-&gt;throw(400) if ($@);    # not a JSON, or can't parse
+            eval {
+                $data = $json-&gt;decode( $self-&gt;request-&gt;content );
+            };
+            # not a JSON, or can't parse:
+            Tatsumaki::Error::HTTP-&gt;throw(400) if ($@);
             Tatsumaki::Error::HTTP-&gt;throw(400)
-                unless ( defined $data-&gt;{description} and defined $data-&gt;{isDone} );
+                unless (
+                    defined $data-&gt;{description}
+                    and defined $data-&gt;{isDone}
+                );
             my $task = Tasks::Model::Task-&gt;create(
                 isdone =&gt; $data-&gt;{isDone} ? 1 : 0,
                 description =&gt; $data-&gt;{description},
             );
             $self-&gt;response-&gt;status(201);
-            $self-&gt;response-&gt;headers( [ 'Location' =&gt; '/task/' . $task-&gt;id, ] );
+            $self-&gt;response-&gt;headers([
+                 'Location' =&gt; '/task/' . $task-&gt;id,
+            ]);
         }
     </pre>
-    If you restart plackup and sc-server, you should be able to press the <tt>Add Task</tt> button
-    in the interface and see the <tt>New task</tt> popping up. You won't be able to edit it yet, though.
-</p>
-
+<p>If you restart plackup and sc-server, you should be able to press the <tt>Add Task</tt> button     in the interface and see the <tt>New task</tt> popping up. You won't be able to edit it yet, though.</p>
 <h2>Editing a task</h2>
-<p>
-    This action is performed via a JSON PUT request to /task/NNN, which should contain an
-    hashref of either isDone, description, or both. The task identified by the number NNN should
-    be updated with the new information given via the request. We can return the same Location
-    header and HTTP status as the POST we just saw.
-    Inside the Tasks::Controller::Content package, below the <tt>sub get</tt>, insert the
-    following:
-    <pre>
-        # PUT new details for a task (isDone or description)
+<p>This action is performed via a JSON PUT request to /task/NNN, which should contain an     hashref of either isDone, description, or both. The task identified by the number NNN should     be updated with the new information given via the request. We can return the same Location     header and HTTP status as the POST we just saw.     Inside the Tasks::Controller::Content package, below the <tt>sub get</tt>, insert the     following:</p>
+<pre>        # PUT new details for a task (isDone or description)
         sub put {
             my ( $self, $id ) = @_;
             my $task;
@@ -266,31 +189,38 @@ effectively replacing the <tt>package Tasks::Controller::List</tt> contents with
             $json-&gt;allow_barekey(1);
             $json-&gt;allow_singlequote(1);
             my $data;
-            eval { $data = $json-&gt;decode( $self-&gt;request-&gt;content ); };
-            Tatsumaki::Error::HTTP-&gt;throw(400) if ($@);    # not a JSON, or can't parse
+            eval {
+                $data = $json-&gt;decode( $self-&gt;request-&gt;content );
+            };
+            # not a JSON, or can't parse
+            Tatsumaki::Error::HTTP-&gt;throw(400) if ($@);
             Tatsumaki::Error::HTTP-&gt;throw(400)
-                unless ( defined $data-&gt;{description} or defined $data-&gt;{isDone} );
-            my $new_isdone = defined $data-&gt;{isDone}      ? int( $data-&gt;{isDone} ) : $task-&gt;isdone;
-            my $new_desc   = defined $data-&gt;{description} ? $data-&gt;{description}   : $task-&gt;description;
-            Tasks::Model-&gt;do( 'UPDATE Task SET isDone=?, description=? WHERE id=?',
-                {}, $new_isdone, $new_desc, $task-&gt;id, );
+                unless (
+                    defined $data-&gt;{description}
+                    or defined $data-&gt;{isDone}
+                );
+            my $new_isdone =
+                defined $data-&gt;{isDone}
+                ? int( $data-&gt;{isDone} )
+                : $task-&gt;isdone;
+            my $new_desc   =
+                defined $data-&gt;{description}
+                ? $data-&gt;{description}
+                : $task-&gt;description;
+            Tasks::Model-&gt;do(
+                'UPDATE Task SET isDone=?, description=? WHERE id=?',
+                {}, $new_isdone, $new_desc, $task-&gt;id,
+            );
             $self-&gt;response-&gt;status(201);
-            $self-&gt;response-&gt;headers( [ 'Location' =&gt; '/task/' . $task-&gt;id, ] );
+            $self-&gt;response-&gt;headers([
+                'Location' =&gt; '/task/' . $task-&gt;id,
+            ]);
         }
     </pre>
-    This time you'll be able to restart plackup, remove the SproutCore's tmp/ directory, restart
-    sc-server and finally be able to edit a task, and mark it as done. You won't be able to delete it yet.
-</p>
-
+<p>This time you'll be able to restart plackup, remove the SproutCore's tmp/ directory, restart     sc-server and finally be able to edit a task, and mark it as done. You won't be able to delete it yet.</p>
 <h2>Deleting a task</h2>
-<p>
-    This action is performed via a DELETE request to /task/NNN. As long as the task exists,
-    we'll return a HTTP 200 OK status and purge the task from the database. An HTTP 404 Not Found error
-    will be returned if the task cannot be found on the database, etc.
-    Still inside the Tasks::Controller::Content package, below the just-inserted <tt>sub put</tt>,
-    insert the following:
-    <pre>
-        # DELETE a task
+<p>This action is performed via a DELETE request to /task/NNN. As long as the task exists,     we'll return a HTTP 200 OK status and purge the task from the database. An HTTP 404 Not Found error     will be returned if the task cannot be found on the database, etc.     Still inside the Tasks::Controller::Content package, below the just-inserted <tt>sub put</tt>,     insert the following:</p>
+<pre>        # DELETE a task
         sub delete {
             my ( $self, $id ) = @_;
             my $task;
@@ -301,17 +231,8 @@ effectively replacing the <tt>package Tasks::Controller::List</tt> contents with
             $self-&gt;write('');
         }
     </pre>
-    That should be all: you'll now be able to list, add, edit, and delete tasks.
-</p>
-
+<p>That should be all: you'll now be able to list, add, edit, and delete tasks.</p>
 <h2>Code</h2>
-<p>
-    A full BSD-licensed copy of the full code for this example can be found at
-    <a href="http://darkpan.com/files/tasks.tatsumaki.psgi.txt">http://darkpan.com/files/tasks.tatsumaki.psgi.txt</a>.
-</p>
-
+<p>A full BSD-licensed copy of the full code for this example can be found at     <a href="http://darkpan.com/files/tasks.tatsumaki.psgi.txt">http://darkpan.com/files/tasks.tatsumaki.psgi.txt</a>.</p>
 <h2>You're Done!</h2>
-<p>
-    You can now continue to the next step:<a href="/Todos+07-Hooking+Up+to+the+Backend">Step 7: Hooking Up to the Backend</a>.
-</p>
-
+<p>You can now continue to the next step:<a href="/Todos+07-Hooking+Up+to+the+Backend">Step 7: Hooking Up to the Backend</a>.</p>
